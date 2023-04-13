@@ -1,0 +1,5 @@
+BASE_URL = 'https://reqres.in/api'
+BASE_URL_UI = 'https://reqres.in/api-docs'
+USERS_ENDPOINT = '/users'
+REGISTER_ENDPOINT = '/register'
+LOGIN_ENDPOINT = '/login'
