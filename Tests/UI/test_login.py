@@ -9,6 +9,7 @@ from data.json_requests import *
 successful_login = [LoginUser.login_user, Success.OK, LoginSchema]
 
 
+@pytest.mark.smoke
 @pytest.mark.ui
 @pytest.mark.parametrize('data, status_code, schema', (successful_login,), ids=['successful_login', ])
 def test_successful_login(login_ui, data, status_code, schema):
@@ -21,6 +22,7 @@ def test_successful_login(login_ui, data, status_code, schema):
 
 
 unsuccessful_login = [LoginUser.fail_login_user, Errors.BAD_REQUEST, LoginErrorSchema]
+
 
 @pytest.mark.ui
 @pytest.mark.parametrize('data, status_code, schema', (unsuccessful_login,), ids=['unsuccessful_login', ])

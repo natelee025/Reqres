@@ -1,4 +1,5 @@
 # API
+import allure
 import requests
 from pageclasses.login import LoginAPI
 import config
@@ -12,11 +13,12 @@ log_endpoint = config.BASE_URL + config.LOGIN_ENDPOINT
 
 successful_login = [LoginUser.login_user, Success.OK, LoginSchema]
 
-
+@pytest.mark.smoke
 @pytest.mark.api
 @pytest.mark.parametrize('data, status_code, schema', (successful_login,), ids=['successful_login', ])
 def test_successful_login(data, status_code, schema):
-    response = requests.post(url=log_endpoint, data=data)
+    with allure.step("Отправляем запрос на авторизацию"):
+        response = requests.post(url=log_endpoint, data=data, headers={'User-Agent': 'PostmanRuntime/7.36.1', 'Accept': '*/*'})
     log = LoginAPI(response)
     log.assert_status_code(status_code)
     log.val_login_schema(schema)

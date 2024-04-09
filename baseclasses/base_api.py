@@ -2,13 +2,14 @@ import dpath as dp
 from datetime import datetime, timezone
 
 
+
 class Response:
     def __init__(self, response):
         self.response = response
         self.response_status = response.status_code
 
     def validate_schema(self, schema):
-        schema.parse_obj(self.response.json())
+        schema.model_validate(self.response.json())
 
     def assert_header(self, header, expected_value):
         actual_value = self.response.headers[header]
@@ -48,4 +49,3 @@ class Response:
 
     def get_response_time(self):
         return self.response.elapsed.total_seconds()
-

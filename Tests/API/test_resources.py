@@ -10,9 +10,11 @@ from schemas.resources_schemas import *
 res_endpoint = config.BASE_URL
 
 list_unknown_res = ['unknown', Success.OK, ResourcesList]
+list_unknown_res2 = ['unknown', Success.CREATED, ResourcesList]
 
-
-@pytest.mark.parametrize('resource, status_code, schema', (list_unknown_res,), ids=['list_unknown_resource', ])
+@pytest.mark.xfail(reason='Тест метки xfail')
+@pytest.mark.parametrize('resource, status_code, schema', [list_unknown_res, list_unknown_res2],
+                         ids=['list_unknown_resource', 'list_unknown_res2_failed'])
 def test_list_resource(resource, status_code, schema):
     response = requests.get(url=res_endpoint + f'/{resource}')
     res = ResourcesAPI(response)
@@ -21,11 +23,11 @@ def test_list_resource(resource, status_code, schema):
     res.assert_resources_headers()
 
 
-single_unknown_res = ['unknown', 2, Success.OK, SingleResource]
+single_unknown_res = ('unknown', 2, Success.OK, SingleResource)
 
 
 @pytest.mark.api
-@pytest.mark.parametrize('resource, user_id, status_code, schema', (single_unknown_res,),
+@pytest.mark.parametrize('resource, user_id, status_code, schema', [single_unknown_res, ],
                          ids=['single_unknown_resource', ])
 def test_single_resource(resource, user_id, status_code, schema):
     response = requests.get(url=res_endpoint + f'/{resource}' + f'/{user_id}')
@@ -36,12 +38,12 @@ def test_single_resource(resource, user_id, status_code, schema):
     res.assert_res_elements_values(user_id)
 
 
-non_existent_resource = ['unknown', 23, Errors.NOT_FOUND, EmptySchema]
-zero_resource = ['unknown', 0, Errors.NOT_FOUND, EmptySchema]
+non_existent_resource = ('unknown', 23, Errors.NOT_FOUND, EmptySchema)
+zero_resource = ('unknown', 0, Errors.NOT_FOUND, EmptySchema)
 
 
 @pytest.mark.api
-@pytest.mark.parametrize('resource, user_id, status_code, schema', (non_existent_resource, zero_resource),
+@pytest.mark.parametrize('resource, user_id, status_code, schema', [non_existent_resource, zero_resource],
                          ids=['non_existent_resource', 'zero_resource'])
 def test_single_resource_not_found(resource, user_id, status_code, schema):
     response = requests.get(url=res_endpoint + f'/{resource}' + f'/{user_id}')

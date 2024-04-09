@@ -31,6 +31,7 @@ def get_chrome_options():
     options = Options()
     options.add_argument('--start-maximized')
     options.add_argument('--headless')
+    #отключаем sanbox, который используетс для безопасности, т.к. он может мешать автотестам
     options.add_argument("--no-sandbox")
     options.add_argument('--disable-gpu')
     return options
